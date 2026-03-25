@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReBALNC Case Study — Structural Workflow Audit</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0E1C36;
+    --blue: #1E6DEB;
+    --teal: #00C2A8;
+    --gray: #6E7A91;
+    --soft: #FAFBFC;
+    --white: #FFFFFF;
+    --border: #E2E6EC;
+    --text: #3A4250;
+    --text-light: #8A92A0;
+  }
+
+  body {
+    font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+    background: var(--soft);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    background: var(--white);
+    min-height: 100vh;
+  }
+
+  /* Header bar */
+  .header-bar {
+    background: var(--navy);
+    padding: 40px 60px 36px;
+  }
+
+  .header-bar .brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .header-bar h1 {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .header-bar .subtitle {
+    font-size: 16px;
+    color: var(--gray);
+    font-weight: 300;
+  }
+
+  /* Content */
+  .content {
+    padding: 40px 60px 50px;
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-top: 40px;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--blue);
+  }
+
+  .section-label:first-child {
+    margin-top: 0;
+  }
+
+  p {
+    font-size: 15px;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.7;
+  }
+
+  p.accent {
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  /* Stats table */
+  .stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 10px;
+  }
+
+  .stats-table tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stats-table td {
+    padding: 10px 12px 10px 0;
+    font-size: 14px;
+    vertical-align: top;
+  }
+
+  .stats-table td:first-child {
+    font-weight: 600;
+    color: var(--navy);
+    width: 180px;
+    white-space: nowrap;
+  }
+
+  .stats-table td:nth-child(2) {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    color: var(--blue);
+    width: 80px;
+    text-align: center;
+  }
+
+  .stats-table td:last-child {
+    color: var(--gray);
+  }
+
+  /* Findings */
+  .finding {
+    margin-bottom: 24px;
+  }
+
+  .finding h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+    padding-left: 14px;
+    border-left: 3px solid var(--teal);
+  }
+
+  .finding p {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .finding .detection {
+    font-size: 13px;
+    color: var(--text-light);
+    font-style: italic;
+  }
+
+  /* Belief table */
+  .belief-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 10px;
+  }
+
+  .belief-table thead td {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gray);
+    padding: 10px 14px;
+    background: var(--soft);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .belief-table tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .belief-table tbody td {
+    padding: 12px 14px;
+    font-size: 14px;
+    vertical-align: top;
+    width: 50%;
+  }
+
+  .belief-table tbody td:first-child {
+    color: var(--gray);
+  }
+
+  .belief-table tbody td:last-child {
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* Closing */
+  .closing p {
+    font-size: 14.5px;
+  }
+
+  .closing .lead {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 36px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text-light);
+  }
+
+  .footer a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .header-bar { padding: 28px 24px 24px; }
+    .header-bar h1 { font-size: 24px; }
+    .content { padding: 28px 24px 36px; }
+    .stats-table td:first-child { width: auto; }
+    .stats-table td:last-child { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header-bar">
+    <div class="brand">ReBALNC</div>
+    <h1>Case Study</h1>
+    <div class="subtitle">Structural Workflow Audit — Integrated Advertising Agency</div>
+  </div>
+
+  <div class="content">
+
+    <div class="section-label">What Went In</div>
+    <p>An 88-page process manual from an integrated advertising agency. The document described how work moves from client intake through creative execution and delivery. It had been created during an internal initiative, presented to leadership, and filed in a shared drive. The team referenced it occasionally. Nobody had ever read it as structural data.</p>
+    <p>The team had reorganized twice, added a standing sync, and hired a coordinator to manage the handoffs that kept breaking. The friction never went away.</p>
+
+    <div class="section-label">What the Document Contained</div>
+    <table class="stats-table">
+      <tr><td>Total steps</td><td>24</td><td>Large for a single declared workflow</td></tr>
+      <tr><td>Total transitions</td><td>27</td><td>Non-linear: includes parallel execution paths</td></tr>
+      <tr><td>Unique roles</td><td>7</td><td>Spanning creative, media, coordination, production, and leadership</td></tr>
+      <tr><td>Cross-role transitions</td><td>18 of 27</td><td>67% of all transitions cross department boundaries</td></tr>
+      <tr><td>Approval steps</td><td>4 of 24</td><td>Contract, business case, presentation, creative execution</td></tr>
+      <tr><td>Convergence points</td><td>3 → 1</td><td>Three parallel paths feed into a single step</td></tr>
+      <tr><td>Declared exceptions</td><td>0</td><td>No exception handling paths documented</td></tr>
+    </table>
+
+    <div class="section-label">What the Engine Found</div>
+
+    <div class="finding">
+      <h3>Bottleneck Risk</h3>
+      <p>Three parallel execution paths converge on a single step. Nothing downstream can move until all three arrive. The team knew this step was slow. They assumed it was the person.</p>
+      <p class="detection">Detection basis: In-degree of 3 at convergence step. All three inbound transition IDs traceable to parallel paths in the execution phase.</p>
+    </div>
+
+    <div class="finding">
+      <h3>Handoff Density</h3>
+      <p>Two out of every three transitions cross a department boundary. Work changes hands constantly. The dominant pattern is a ping-pong coordination structure: the primary coordination role hands off to a specialist department, receives it back, and hands off again.</p>
+      <p class="detection">Detection basis: 18 of 27 transitions involve a role change between source step and target step.</p>
+    </div>
+
+    <div class="finding">
+      <h3>Exception Fragility</h3>
+      <p>Four steps branch into parallel paths, creating 17% branch density across the workflow. None of these branch points have declared exception handling. When something goes wrong at a branch, the workflow has no documented path for resolution. The team handles exceptions by feel.</p>
+      <p class="detection">Detection basis: 4 of 24 steps with fan-out of 2 or greater. Zero exception paths declared across entire workflow.</p>
+    </div>
+
+    <div class="finding">
+      <h3>Role Concentration</h3>
+      <p>One department owns 10 of 24 steps, spanning all three phases of the workflow. This role acts as the initiator, the coordination layer, and the scheduling function. If this department is constrained, the entire workflow stalls.</p>
+      <p class="detection">Detection basis: Single role assigned to 42% of all steps across definition, solution, and execution phases.</p>
+    </div>
+
+    <div class="section-label">What the Team Believed vs. What the Structure Showed</div>
+    <table class="belief-table">
+      <thead>
+        <tr><td>The team believed</td><td>The structure showed</td></tr>
+      </thead>
+      <tbody>
+        <tr><td>The bottleneck was a person</td><td>It was a convergence point where three paths meet</td></tr>
+        <tr><td>There were 3–4 major handoffs</td><td>18 cross-role transitions — 67% of all movement</td></tr>
+        <tr><td>Exceptions were handled</td><td>Zero declared exception paths in the entire workflow</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-label">What Became Visible</div>
+    <div class="closing">
+      <p class="lead">Before the audit, the team had observations. After the audit, they had evidence.</p>
+      <p>The bottleneck they blamed on a person was a convergence point built into the structure. The handoff friction they experienced daily was measurable. The exceptions they caught by instinct had no structural support in the documented process. All of it was already declared in the document. Nobody had read it that way.</p>
+      <p>None of this required a consultant's opinion. It required reading the organization's own documentation as structural data, which is what the engine does.</p>
+    </div>
+
+    <div class="footer">
+      Artifact: 88-page process manual · Analysis: ReBALNC Map™ · Turnaround: 1 business day · <a href="https://rebalnc.com">rebalnc.com</a>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
